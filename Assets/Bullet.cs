@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+[RequireComponent(typeof(SphereCollider))]
 public class Bullet : NetworkBehaviour
 {
     [SerializeField] float speed = 10;
@@ -22,8 +23,12 @@ public class Bullet : NetworkBehaviour
         }
     }
 
+    private SphereCollider sphereCollider;
+
     void Start()
     {
+        sphereCollider = GetComponent<SphereCollider>();
+
         Destroy(gameObject, destroyAfter);
     }
 
@@ -31,15 +36,27 @@ public class Bullet : NetworkBehaviour
     {
         transform.position += Direction * speed * Time.deltaTime;
     }
-    
-    void OnCollisionEnter(Collision collision)
+
+    private void FixedUpdate()
     {
-        Debug.Log("ASDASD");
-        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-        if (damageable != null)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
+        if (colliders.Length > 0)
         {
-            damageable.RpcTakeDamage(damage);
-            Destroy(gameObject);
+            CollisionEvent(colliders);
+        }
+    }
+    
+    [Server]
+    void CollisionEvent(Collider[] colliders)
+    {
+        foreach (Collider collider in colliders)
+        {
+            IDamageable damageable = collider.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.RpcTakeDamage(damage);
+                NetworkServer.Destroy(gameObject);
+            }
         }
     }
 }

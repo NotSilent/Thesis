@@ -12,7 +12,7 @@ public class EnemySpawner : NetworkBehaviour
 
     int currentNumberOfEnemies;
     float currentTimeBetweenSpawns;
-
+    
     void Start()
     {
         currentNumberOfEnemies = 0;
@@ -37,10 +37,5 @@ public class EnemySpawner : NetworkBehaviour
     {
         GameObject newEnemy = Instantiate(enemyToSpawn.gameObject) as GameObject;
         NetworkServer.Spawn(newEnemy);
-    }
-
-    void OnEnemyDied(Enemy enemy)
-    {
-
     }
 }

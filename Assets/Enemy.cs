@@ -9,7 +9,7 @@ public class Enemy : NetworkBehaviour
     [SerializeField] float speed = 100;
 
     CharacterController characterController;
-
+    
     void Start()
     {
         characterController = GetComponent<CharacterController>();
