@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class EnemyDamageable : NetworkBehaviour, IDamageable
+public class CharacterDamageable : NetworkBehaviour, IDamageable
 {
+    public delegate void NotifyOnDamageTaken(float currentHealth, float maxHealth);
+
+    [SyncEvent]
+    public event NotifyOnDamageTaken EventOnDamageTaken;
+
     [SerializeField] float maxHealth = 100f;
     float currentHealth;
 
@@ -24,6 +29,8 @@ public class EnemyDamageable : NetworkBehaviour, IDamageable
         }
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+
+        EventOnDamageTaken(currentHealth, maxHealth);
     }
 
     private void OnDied()

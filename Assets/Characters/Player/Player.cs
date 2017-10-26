@@ -15,8 +15,9 @@ public class Player : NetworkBehaviour
 
         if (!isLocalPlayer)
         {
-            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-            meshRenderer.material.color = Color.red;
+            MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+                meshRenderer.material.color = Color.red;
         }
     }
 
@@ -63,7 +64,7 @@ public class Player : NetworkBehaviour
         GameObject bulletObject = Instantiate(bullet.gameObject) as GameObject;
         bulletObject.transform.SetParent(null);
         bulletObject.transform.position = transform.position;
-                
+
         NetworkServer.Spawn(bulletObject);
 
         RpcSetBulletDirection(bulletObject, direction);
