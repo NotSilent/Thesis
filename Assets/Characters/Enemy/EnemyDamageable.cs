@@ -16,7 +16,7 @@ public class EnemyDamageable : CharacterDamageable
     {
         GameObject newExperienceSpawner = Instantiate(experienceSpawner.gameObject) as GameObject;
         newExperienceSpawner.transform.SetParent(null);
-        newExperienceSpawner.GetComponent<ExperienceSpawner>()?.Init(experience, transform.position);
+        newExperienceSpawner.GetComponent<ExperienceSpawner>().Init(experience, transform.position);
         NetworkServer.Spawn(newExperienceSpawner);
     }
 }

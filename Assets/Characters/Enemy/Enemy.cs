@@ -43,5 +43,6 @@ public class Enemy : NetworkBehaviour
             default:
                 return;
         }
+        rb.AddForce(Physics.gravity);
     }
 }

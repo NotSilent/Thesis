@@ -8,11 +8,18 @@ public class Player : NetworkBehaviour
     [SerializeField] GameObject model;
     [SerializeField] float speed = 5f;
 
+    WeaponHandler weaponHandler;
+
+    NetworkIdentity networkIdentity;
+
     Rigidbody rb;
     Collider col;
 
     private void Start()
     {
+        networkIdentity = GetComponent<NetworkIdentity>();
+        weaponHandler = GetComponent<WeaponHandler>();
+
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
 
@@ -57,7 +64,7 @@ public class Player : NetworkBehaviour
             if (Physics.Raycast(ray, out raycastHit, 100f, ~0, QueryTriggerInteraction.Ignore))
             {
                 Vector3 direction = raycastHit.point - transform.position;
-                CmdShoot(direction);
+                weaponHandler.FireCurrentWeapon(direction, networkIdentity);
             }
         }
     }
@@ -75,25 +82,5 @@ public class Player : NetworkBehaviour
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
 
         rb.velocity = direction * speed + Physics.gravity;
-    }
-
-    [Command]
-    void CmdShoot(Vector3 direction)
-    {
-        GameObject bulletObject = Instantiate(bullet.gameObject) as GameObject;
-        bulletObject.transform.SetParent(null);
-        bulletObject.transform.position = transform.position;
-
-        NetworkServer.Spawn(bulletObject);
-
-        RpcSetBulletDirection(bulletObject, direction);
-    }
-
-    [ClientRpc]
-    void RpcSetBulletDirection(GameObject bulletObject, Vector3 direction)
-    {
-        Bullet newBullet = bulletObject.GetComponent<Bullet>();
-        newBullet.Direction = direction.normalized;
-        Physics.IgnoreCollision(col, bulletObject.GetComponent<Collider>());
     }
 }

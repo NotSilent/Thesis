@@ -26,7 +26,7 @@ public class ExperienceSpawner : NetworkBehaviour
         {
             GameObject newExperience = Instantiate(experience.gameObject) as GameObject;
             newExperience.transform.SetParent(null);
-            newExperience.GetComponent<Experience>()?.Init(player.gameObject, transform.position);
+            newExperience.GetComponent<Experience>().Init(player.gameObject, transform.position);
             NetworkServer.Spawn(newExperience);
             yield return new WaitForSeconds(deltaTick);
         }
