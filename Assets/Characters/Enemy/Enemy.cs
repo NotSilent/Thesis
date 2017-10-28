@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[RequireComponent(typeof(CharacterController))]
 public class Enemy : NetworkBehaviour
 {
-    [SerializeField] float speed = 100;
+    [SerializeField] float speed = 5;
 
-    CharacterController characterController;
+    Rigidbody rb;
     
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        characterController.SimpleMove(Vector3.down * Physics.gravity.y * Time.deltaTime);
         RandomWalk();
     }
 
@@ -27,19 +25,19 @@ public class Enemy : NetworkBehaviour
         switch (direction)
         {
             case 0:
-                characterController.SimpleMove(Vector3.forward * speed * Time.deltaTime);
+                rb.velocity = Vector3.forward * speed;
                 break;
 
             case 1:
-                characterController.SimpleMove(Vector3.back * speed * Time.deltaTime);
+                rb.velocity = Vector3.back * speed;
                 break;
 
             case 2:
-                characterController.SimpleMove(Vector3.left * speed * Time.deltaTime);
+                rb.velocity = Vector3.left * speed;
                 break;
 
             case 3:
-                characterController.SimpleMove(Vector3.right * speed * Time.deltaTime);
+                rb.velocity = Vector3.right * speed;
                 break;
 
             default:

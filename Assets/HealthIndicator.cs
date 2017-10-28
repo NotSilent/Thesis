@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthIndicator : MonoBehaviour
 {
     [SerializeField] Image image;
 
-    private CharacterDamageable health;
+    CharacterDamageable health;
 
     private void Awake()
     {

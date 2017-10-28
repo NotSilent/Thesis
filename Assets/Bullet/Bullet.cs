@@ -22,13 +22,9 @@ public class Bullet : NetworkBehaviour
             direction = new Vector3(value.x, 0, value.z);
         }
     }
-
-    private SphereCollider sphereCollider;
-
+    
     void Start()
     {
-        sphereCollider = GetComponent<SphereCollider>();
-
         Destroy(gameObject, destroyAfter);
     }
 
@@ -37,26 +33,14 @@ public class Bullet : NetworkBehaviour
         transform.position += Direction * speed * Time.deltaTime;
     }
 
-    private void FixedUpdate()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, sphereCollider.radius);
-        if (colliders.Length > 0)
-        {
-            CollisionEvent(colliders);
-        }
-    }
-    
     [Server]
-    void CollisionEvent(Collider[] colliders)
+    void OnCollisionEnter(Collision collision)
     {
-        foreach (Collider collider in colliders)
+        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            IDamageable damageable = collider.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.RpcTakeDamage(damage);
-                NetworkServer.Destroy(gameObject);
-            }
+            damageable.CmdTakeDamage(damage);
+            NetworkServer.Destroy(gameObject);
         }
     }
 }

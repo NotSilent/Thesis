@@ -9,49 +9,49 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1667778934197320}
+  m_RootGameObject: {fileID: 1931983950068238}
   m_IsPrefabParent: 1
---- !u!1 &1667778934197320
+--- !u!1 &1931983950068238
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4848228587794992}
-  - component: {fileID: 33671531417871696}
-  - component: {fileID: 23706230662372754}
-  - component: {fileID: 114728815703493946}
-  - component: {fileID: 114306531365860242}
-  - component: {fileID: 135622271504833138}
-  - component: {fileID: 54442101660646844}
-  - component: {fileID: 114526427693009026}
-  m_Layer: 0
-  m_Name: Bullet
+  - component: {fileID: 4036914965655558}
+  - component: {fileID: 33572780376621030}
+  - component: {fileID: 23070407853423708}
+  - component: {fileID: 114701637589742678}
+  - component: {fileID: 114024958389313088}
+  - component: {fileID: 65095740035239836}
+  - component: {fileID: 54012042136202550}
+  - component: {fileID: 114965046284124038}
+  m_Layer: 9
+  m_Name: Experience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4848228587794992
+--- !u!4 &4036914965655558
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
+  m_GameObject: {fileID: 1931983950068238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23706230662372754
+--- !u!23 &23070407853423708
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
+  m_GameObject: {fileID: 1931983950068238}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -78,19 +78,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33671531417871696
+--- !u!33 &33572780376621030
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54442101660646844
+  m_GameObject: {fileID: 1931983950068238}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &54012042136202550
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
+  m_GameObject: {fileID: 1931983950068238}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -100,19 +100,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114306531365860242
+--- !u!65 &65095740035239836
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1931983950068238}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114024958389313088
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
+  m_GameObject: {fileID: 1931983950068238}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 1
-  m_SendInterval: 0
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
   m_SyncRotationAxis: 0
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -121,61 +133,47 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &114526427693009026
+--- !u!114 &114701637589742678
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
+  m_GameObject: {fileID: 1931983950068238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4987f0d6635564340a006f2f8bbed882, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  destroyAfter: 5
-  damage: 5
---- !u!114 &114728815703493946
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 25
-    i1: 161
-    i2: 152
-    i3: 243
-    i4: 137
-    i5: 83
-    i6: 31
-    i7: 20
-    i8: 43
-    i9: 162
-    i10: 198
-    i11: 118
-    i12: 212
-    i13: 205
-    i14: 208
-    i15: 95
+    i0: 229
+    i1: 126
+    i2: 188
+    i3: 6
+    i4: 211
+    i5: 247
+    i6: 200
+    i7: 68
+    i8: 216
+    i9: 1
+    i10: 217
+    i11: 231
+    i12: 144
+    i13: 195
+    i14: 39
+    i15: 121
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!135 &135622271504833138
-SphereCollider:
+--- !u!114 &114965046284124038
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1667778934197320}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_GameObject: {fileID: 1931983950068238}
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd4e8fae2ddcad4a90de22816782ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2

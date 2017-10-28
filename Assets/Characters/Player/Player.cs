@@ -5,13 +5,16 @@ using UnityEngine.Networking;
 public class Player : NetworkBehaviour
 {
     [SerializeField] Bullet bullet;
+    [SerializeField] GameObject model;
     [SerializeField] float speed = 5f;
 
-    CharacterController characterController;
+    Rigidbody rb;
+    Collider col;
 
     private void Start()
     {
-        characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
 
         if (!isLocalPlayer)
         {
@@ -21,21 +24,32 @@ public class Player : NetworkBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (!isLocalPlayer)
         {
             return;
         }
 
-        characterController.SimpleMove(Vector3.down * Physics.gravity.y * Time.deltaTime);
         ProcessInput();
+
+        RaycastHit raycastHit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out raycastHit, 100f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            model.transform.LookAt(new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z));
+        }
     }
 
-    private void ProcessInput()
+    void FixedUpdate()
     {
+        if (!isLocalPlayer)
+            return;
         ProcessMovement();
+    }
 
+    void ProcessInput()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit raycastHit;
@@ -48,14 +62,19 @@ public class Player : NetworkBehaviour
         }
     }
 
-    private void ProcessMovement()
+    void ProcessMovement()
     {
-        float horizontal = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        float vertical = Input.GetAxis("Vertical") * speed * Time.deltaTime;
+        int w = Convert.ToInt32(Input.GetKey(KeyCode.W));
+        int s = Convert.ToInt32(Input.GetKey(KeyCode.S));
+        int a = Convert.ToInt32(Input.GetKey(KeyCode.A));
+        int d = Convert.ToInt32(Input.GetKey(KeyCode.D));
 
-        Vector3 direction = new Vector3(horizontal, 0, vertical);
+        int horizontal = d - a;
+        int vertical = w - s;
 
-        characterController?.SimpleMove(direction);
+        Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+        rb.velocity = direction * speed + Physics.gravity;
     }
 
     [Command]
@@ -75,6 +94,6 @@ public class Player : NetworkBehaviour
     {
         Bullet newBullet = bulletObject.GetComponent<Bullet>();
         newBullet.Direction = direction.normalized;
-        Physics.IgnoreCollision(characterController, bulletObject.GetComponent<Collider>());
+        Physics.IgnoreCollision(col, bulletObject.GetComponent<Collider>());
     }
 }

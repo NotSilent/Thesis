@@ -4,12 +4,12 @@ using UnityEngine.Networking;
 public class CameraFollow : NetworkBehaviour
 {
 	[SerializeField] Vector3 relativePosition;
-
-	Camera mainCamera;
+        
+	Camera cam;
 
 	private void Awake()
 	{
-		mainCamera = Camera.main;
+		cam = Camera.main;
 	}
 
 	private void LateUpdate()
@@ -18,8 +18,8 @@ public class CameraFollow : NetworkBehaviour
 		{
 			return;
 		}
-		mainCamera.transform.SetParent(this.transform);
-		mainCamera.transform.localPosition = relativePosition;
-		mainCamera.transform.LookAt(this.transform);
+		cam.transform.SetParent(this.transform);
+		cam.transform.localPosition = relativePosition;
+		cam.transform.LookAt(this.transform);
 	}
 }

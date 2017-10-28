@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
 public class CharacterDamageable : NetworkBehaviour, IDamageable
@@ -18,22 +16,27 @@ public class CharacterDamageable : NetworkBehaviour, IDamageable
         currentHealth = maxHealth;
     }
 
+    [Command]
+    public void CmdTakeDamage(float damage)
+    {
+        EventOnDamageTaken(currentHealth, maxHealth);
+        RpcTakeDamage(damage);
+    }
+    
     [ClientRpc]
-    public void RpcTakeDamage(float damage)
+    private void RpcTakeDamage(float damage)
     {
         currentHealth -= damage;
 
-        if(currentHealth <= 0f)
+        if (currentHealth <= 0f)
         {
             OnDied();
         }
 
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
-        EventOnDamageTaken(currentHealth, maxHealth);
     }
 
-    private void OnDied()
+    protected virtual void OnDied()
     {
         Destroy(gameObject);
     }
