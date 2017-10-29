@@ -13,7 +13,11 @@ public class Player : NetworkBehaviour
     NetworkIdentity networkIdentity;
 
     Rigidbody rb;
-    Collider col;
+
+    private void Awake()
+    {
+        FindObjectOfType<NetworkGameManager>().RegisterPlayer();
+    }
 
     private void Start()
     {
@@ -21,7 +25,6 @@ public class Player : NetworkBehaviour
         weaponHandler = GetComponent<WeaponHandler>();
 
         rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
 
         if (!isLocalPlayer)
         {
@@ -31,21 +34,31 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public void Disable()
+    {
+        rb.velocity = Vector3.zero;
+        foreach(MeshRenderer meshRenderer in model.GetComponentsInChildren<MeshRenderer>())
+        {
+            meshRenderer.enabled = false;
+        }
+        this.enabled = false;
+    }
+
     void Update()
     {
         if (!isLocalPlayer)
         {
             return;
         }
-
-        ProcessInput();
-
+        
         RaycastHit raycastHit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out raycastHit, 100f, ~0, QueryTriggerInteraction.Ignore))
         {
             model.transform.LookAt(new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z));
+            ProcessInput(raycastHit.point);
         }
+        
     }
 
     void FixedUpdate()
@@ -55,17 +68,11 @@ public class Player : NetworkBehaviour
         ProcessMovement();
     }
 
-    void ProcessInput()
+    void ProcessInput(Vector3 target)
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit raycastHit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out raycastHit, 100f, ~0, QueryTriggerInteraction.Ignore))
-            {
-                Vector3 direction = raycastHit.point - transform.position;
-                weaponHandler.FireCurrentWeapon(direction, networkIdentity);
-            }
+            weaponHandler.FireCurrentWeapon(target, networkIdentity);
         }
     }
 

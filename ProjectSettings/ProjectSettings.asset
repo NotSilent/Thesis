@@ -589,7 +589,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 2
   cloudProjectId: 2e73c769-41cc-42fa-9648-756020e26853
   projectName: Thesis
   organizationId: thesilent

@@ -858,7 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon: {fileID: 114815245612721398}
-  projectileStartPos: {fileID: 1912504842141818}
+  projectileStartPosition: {fileID: 1912504842141818}
 --- !u!136 &136832196805853310
 CapsuleCollider:
   m_ObjectHideFlags: 1

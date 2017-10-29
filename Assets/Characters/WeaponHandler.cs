@@ -4,10 +4,11 @@ using UnityEngine.Networking;
 class WeaponHandler : NetworkBehaviour
 {
     [SerializeField] Weapon currentWeapon;
-    [SerializeField] GameObject projectileStartPos;
+    [SerializeField] GameObject projectileStartPosition;
     
-    public void FireCurrentWeapon(Vector3 direction, NetworkIdentity networkIdentityToIgnore)
+    public void FireCurrentWeapon(Vector3 target, NetworkIdentity networkIdentityToIgnore)
     {
-        currentWeapon.CmdSpawnBullet(projectileStartPos.transform.position, direction, networkIdentityToIgnore);
+        currentWeapon.CmdSpawnBullet(projectileStartPosition.transform.position,
+            target - projectileStartPosition.transform.position, networkIdentityToIgnore);
     }
 }
