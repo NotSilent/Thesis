@@ -37,10 +37,13 @@ class Experience : NetworkBehaviour
         CmdOnCollision();
     }
     
+    [Command]
     void CmdOnCollision()
     {
         RpcOnCollision();
     }
+
+    [ClientRpc]
     void RpcOnCollision()
     {
         Destroy(gameObject);

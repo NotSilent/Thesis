@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4711775047344630}
+  - component: {fileID: 114194638361622540}
   - component: {fileID: 114881396338257600}
   m_Layer: 0
   m_Name: NetworkGameManager
@@ -40,6 +41,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114194638361622540
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1120283265567088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 82
+    i2: 38
+    i3: 205
+    i4: 213
+    i5: 87
+    i6: 147
+    i7: 180
+    i8: 170
+    i9: 62
+    i10: 212
+    i11: 95
+    i12: 160
+    i13: 223
+    i14: 80
+    i15: 130
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114881396338257600
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class Area : MonoBehaviour
+public class Area : NetworkBehaviour
 {
     [SerializeField] float time;
 
@@ -21,6 +22,20 @@ public class Area : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        NetworkIdentity networkIdentity = other.gameObject.GetComponent<NetworkIdentity>();
+        if (networkIdentity && isServer)
+            RpcOnTriggerExit(networkIdentity);
+    }
+
+    [Command]
+    void CmdOnTriggerExit(NetworkIdentity other)
+    {
+        RpcOnTriggerExit(other);
+    }
+
+    [ClientRpc]
+    void RpcOnTriggerExit(NetworkIdentity other)
+    {
         Player player = other.gameObject.GetComponent<Player>();
         if (player)
         {
@@ -33,6 +48,13 @@ public class Area : MonoBehaviour
     }
 
     public void Init()
+    {
+        if (isServer)
+            RpcInit();
+    }
+
+    [ClientRpc]
+    private void RpcInit()
     {
         isInitialized = true;
     }

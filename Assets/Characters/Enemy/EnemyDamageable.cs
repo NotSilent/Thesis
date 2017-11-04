@@ -8,10 +8,12 @@ public class EnemyDamageable : CharacterDamageable
 
     protected override void OnDied()
     {
-        SpawnExperience();
+        if (isServer)
+            SpawnExperience();
         base.OnDied();
     }
 
+    [Server]
     private void SpawnExperience()
     {
         GameObject newExperienceSpawner = Instantiate(experienceSpawner.gameObject) as GameObject;

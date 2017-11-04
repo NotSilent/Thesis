@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class NetworkGameManager : NetworkBehaviour
 {
-    static int currentPlayers;
+    int currentPlayers;
 
     Area area;
 
@@ -14,7 +14,8 @@ public class NetworkGameManager : NetworkBehaviour
         area = FindObjectOfType<Area>();
     }
 
-    public void RegisterPlayer()
+    [ClientRpc]
+    public void RpcRegisterPlayer()
     {
         currentPlayers++;
 

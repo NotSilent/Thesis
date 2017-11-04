@@ -16,10 +16,15 @@ public class Enemy : NetworkBehaviour
 
     void FixedUpdate()
     {
-        RandomWalk();
+        CmdRandomWalk();
     }
-
-    void RandomWalk()
+    
+    void CmdRandomWalk()
+    {
+        RpcRandomWalk();
+    }
+    
+    void RpcRandomWalk()
     {
         int direction = Random.Range(0, 3);
         switch (direction)

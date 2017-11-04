@@ -16,7 +16,10 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        FindObjectOfType<NetworkGameManager>().RegisterPlayer();
+        if (FindObjectOfType<NetworkGameManager>())
+        {
+            FindObjectOfType<NetworkGameManager>().RpcRegisterPlayer();
+        }
     }
 
     private void Start()
@@ -37,7 +40,7 @@ public class Player : NetworkBehaviour
     public void Disable()
     {
         rb.velocity = Vector3.zero;
-        foreach(MeshRenderer meshRenderer in model.GetComponentsInChildren<MeshRenderer>())
+        foreach (MeshRenderer meshRenderer in model.GetComponentsInChildren<MeshRenderer>())
         {
             meshRenderer.enabled = false;
         }
@@ -47,10 +50,8 @@ public class Player : NetworkBehaviour
     void Update()
     {
         if (!isLocalPlayer)
-        {
             return;
-        }
-        
+
         RaycastHit raycastHit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out raycastHit, 100f, ~0, QueryTriggerInteraction.Ignore))
@@ -58,13 +59,14 @@ public class Player : NetworkBehaviour
             model.transform.LookAt(new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z));
             ProcessInput(raycastHit.point);
         }
-        
+
     }
 
     void FixedUpdate()
     {
         if (!isLocalPlayer)
             return;
+
         ProcessMovement();
     }
 

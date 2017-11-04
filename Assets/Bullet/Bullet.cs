@@ -22,7 +22,7 @@ public class Bullet : NetworkBehaviour
             direction = new Vector3(value.x, 0, value.z);
         }
     }
-    
+
     void Start()
     {
         Destroy(gameObject, destroyAfter);
@@ -33,13 +33,25 @@ public class Bullet : NetworkBehaviour
         transform.position += Direction * speed * Time.deltaTime;
     }
 
-    [Server]
     void OnCollisionEnter(Collision collision)
+    {
+        if (isServer)
+            RpcOnCollisionEnter(collision.gameObject.GetComponent<NetworkIdentity>());
+    }
+
+    [Command]
+    void CmdOnCollisionEnter(NetworkIdentity collision)
+    {
+        RpcOnCollisionEnter(collision);
+    }
+
+    [ClientRpc]
+    void RpcOnCollisionEnter(NetworkIdentity collision)
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.CmdTakeDamage(damage);
+            damageable.TakeDamage(damage);
             NetworkServer.Destroy(gameObject);
         }
     }
