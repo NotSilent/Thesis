@@ -1,17 +1,14 @@
-﻿using UnityEngine;
+﻿using System.ComponentModel;
+using UnityEngine;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(NetworkManager))]
 public class CustomNetworkManagerHUD : MonoBehaviour
 {
+    public NetworkManager manager;
     [SerializeField] public bool showGUI = true;
     [SerializeField] public int offsetX;
     [SerializeField] public int offsetY;
-
-    private NetworkManager manager;
-
-    // Runtime variable
-    bool m_ShowServer;
 
     void Awake()
     {
@@ -30,100 +27,58 @@ public class CustomNetworkManagerHUD : MonoBehaviour
         bool noConnection = (manager.client == null || manager.client.connection == null ||
                              manager.client.connection.connectionId == -1);
 
-        if (!NetworkServer.active && !manager.IsClientConnected() && noConnection)
+        if (!manager.IsClientConnected() && !NetworkServer.active && manager.matchMaker == null)
         {
-            ypos += 10;
-
-            if (manager.matchMaker == null)
+            if (noConnection)
             {
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Enable Match Maker (M)"))
+                if (UnityEngine.Application.platform != RuntimePlatform.WebGLPlayer)
                 {
-                    manager.StartMatchMaker();
+                    if (GUI.Button(new Rect(xpos, ypos, 200, 20), "LAN Host(H)"))
+                    {
+                        manager.StartHost();
+                    }
+                    ypos += spacing;
                 }
+
+                if (GUI.Button(new Rect(xpos, ypos, 105, 20), "LAN Client(C)"))
+                {
+                    manager.StartClient();
+                }
+
+                manager.networkAddress = GUI.TextField(new Rect(xpos + 100, ypos, 95, 20), manager.networkAddress);
                 ypos += spacing;
+                
             }
             else
             {
-                if (manager.matchInfo == null)
+                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Cancel Connection Attempt"))
                 {
-                    if (manager.matches == null)
-                    {
-                        if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Create Internet Match"))
-                        {
-                            manager.matchMaker.CreateMatch(manager.matchName, manager.matchSize, true, "", "", "", 0, 0, manager.OnMatchCreate);
-                        }
-                        ypos += spacing;
-
-                        GUI.Label(new Rect(xpos, ypos, 100, 20), "Room Name:");
-                        manager.matchName = GUI.TextField(new Rect(xpos + 100, ypos, 100, 20), manager.matchName);
-                        ypos += spacing;
-
-                        ypos += 10;
-
-                        if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Find Internet Match"))
-                        {
-                            manager.matchMaker.ListMatches(0, 20, "", false, 0, 0, manager.OnMatchList);
-                        }
-                        ypos += spacing;
-                    }
-                    else
-                    {
-                        for (int i = 0; i < manager.matches.Count; i++)
-                        {
-                            var match = manager.matches[i];
-                            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Join Match:" + match.name))
-                            {
-                                manager.matchName = match.name;
-                                manager.matchMaker.JoinMatch(match.networkId, "", "", "", 0, 0, manager.OnMatchJoined);
-                            }
-                            ypos += spacing;
-                        }
-
-                        if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Back to Match Menu"))
-                        {
-                            manager.matches = null;
-                        }
-                        ypos += spacing;
-                    }
+                    manager.StopClient();
                 }
-
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Change MM server"))
-                {
-                    m_ShowServer = !m_ShowServer;
-                }
-                if (m_ShowServer)
-                {
-                    ypos += spacing;
-                    if (GUI.Button(new Rect(xpos, ypos, 100, 20), "Local"))
-                    {
-                        manager.SetMatchHost("localhost", 1337, false);
-                        m_ShowServer = false;
-                    }
-                    ypos += spacing;
-                    if (GUI.Button(new Rect(xpos, ypos, 100, 20), "Internet"))
-                    {
-                        manager.SetMatchHost("mm.unet.unity3d.com", 443, true);
-                        m_ShowServer = false;
-                    }
-                    ypos += spacing;
-                    if (GUI.Button(new Rect(xpos, ypos, 100, 20), "Staging"))
-                    {
-                        manager.SetMatchHost("staging-mm.unet.unity3d.com", 443, true);
-                        m_ShowServer = false;
-                    }
-                }
-
-                ypos += spacing;
-
-                GUI.Label(new Rect(xpos, ypos, 300, 20), "MM Uri: " + manager.matchMaker.baseUri);
-                ypos += spacing;
-
-                if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Disable Match Maker"))
-                {
-                    manager.StopMatchMaker();
-                }
-                ypos += spacing;
             }
+        }
+
+        if (manager.IsClientConnected() && !ClientScene.ready)
+        {
+            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Client Ready"))
+            {
+                ClientScene.Ready(manager.client.connection);
+
+                if (ClientScene.localPlayers.Count == 0)
+                {
+                    ClientScene.AddPlayer(0);
+                }
+            }
+            ypos += spacing;
+        }
+
+        if (NetworkServer.active || manager.IsClientConnected())
+        {
+            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Stop (X)"))
+            {
+                manager.StopHost();
+            }
+            ypos += spacing;
         }
     }
 }

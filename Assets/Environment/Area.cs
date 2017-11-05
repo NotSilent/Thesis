@@ -27,12 +27,6 @@ public class Area : NetworkBehaviour
             RpcOnTriggerExit(networkIdentity);
     }
 
-    [Command]
-    void CmdOnTriggerExit(NetworkIdentity other)
-    {
-        RpcOnTriggerExit(other);
-    }
-
     [ClientRpc]
     void RpcOnTriggerExit(NetworkIdentity other)
     {

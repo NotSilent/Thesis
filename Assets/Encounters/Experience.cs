@@ -34,12 +34,6 @@ class Experience : NetworkBehaviour
     
     void OnCollisionEnter(Collision collision)
     {
-        CmdOnCollision();
-    }
-    
-    [Command]
-    void CmdOnCollision()
-    {
         RpcOnCollision();
     }
 

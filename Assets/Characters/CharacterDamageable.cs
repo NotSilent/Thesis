@@ -22,12 +22,6 @@ public class CharacterDamageable : NetworkBehaviour, IDamageable
         EventOnDamageTaken(currentHealth, maxHealth);
     }
 
-    [Command]
-    private void CmdTakeDamage(float damage)
-    {
-        RpcTakeDamage(damage);
-    }
-
     [ClientRpc]
     private void RpcTakeDamage(float damage)
     {

@@ -8,6 +8,9 @@ public class Player : NetworkBehaviour
     [SerializeField] GameObject model;
     [SerializeField] float speed = 5f;
 
+    [SerializeField]
+    LocalPlayerHealth localPlayerHealth;
+
     WeaponHandler weaponHandler;
 
     NetworkIdentity networkIdentity;
@@ -16,10 +19,11 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        if (FindObjectOfType<NetworkGameManager>())
-        {
-            FindObjectOfType<NetworkGameManager>().RpcRegisterPlayer();
-        }
+        //if (FindObjectOfType<NetworkGameManager>())
+        //{
+        //    FindObjectOfType<NetworkGameManager>().RpcRegisterPlayer();
+        //}
+
     }
 
     private void Start()
@@ -34,6 +38,13 @@ public class Player : NetworkBehaviour
             MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer meshRenderer in meshRenderers)
                 meshRenderer.material.color = Color.red;
+        }
+        else
+        {
+            GetComponentInChildren<HealthIndicator>().gameObject.SetActive(false);
+            GameObject playerHealthUI = Instantiate(localPlayerHealth.gameObject) as GameObject;
+            playerHealthUI.GetComponent<LocalPlayerHealth>().Init(GetComponent<CharacterDamageable>());
+            Debug.Log("ASDASDASD");
         }
     }
 

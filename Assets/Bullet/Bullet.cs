@@ -39,12 +39,6 @@ public class Bullet : NetworkBehaviour
             RpcOnCollisionEnter(collision.gameObject.GetComponent<NetworkIdentity>());
     }
 
-    [Command]
-    void CmdOnCollisionEnter(NetworkIdentity collision)
-    {
-        RpcOnCollisionEnter(collision);
-    }
-
     [ClientRpc]
     void RpcOnCollisionEnter(NetworkIdentity collision)
     {

@@ -147,9 +147,76 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114194638361622540, guid: 005226cdd55793b4aa3ed45fa0df5082,
+        type: 2}
+      propertyPath: m_ServerOnly
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 005226cdd55793b4aa3ed45fa0df5082, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &222887804
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 222887807}
+  - component: {fileID: 222887806}
+  - component: {fileID: 222887805}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &222887805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 222887804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1077351063, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &222887806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 222887804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 5
+--- !u!4 &222887807
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 222887804}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1081990156
 Prefab:
   m_ObjectHideFlags: 0
@@ -214,7 +281,18 @@ Prefab:
       propertyPath: m_PlayerSpawnMethod
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114465691626125900, guid: 2c0bf8260c37e68498d56a91d48496a2,
+        type: 2}
+      propertyPath: m_AutoCreatePlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114465691626125900, guid: 2c0bf8260c37e68498d56a91d48496a2,
+        type: 2}
+      propertyPath: m_UseSimulator
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114427070347387220, guid: 2c0bf8260c37e68498d56a91d48496a2, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 2c0bf8260c37e68498d56a91d48496a2, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1381899069
@@ -382,7 +460,7 @@ Prefab:
     - target: {fileID: 114366757003179996, guid: 63482eb0564d5d54a80af76facedec07,
         type: 2}
       propertyPath: m_LocalPlayerAuthority
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 63482eb0564d5d54a80af76facedec07, type: 2}
@@ -429,6 +507,26 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 47d51f8629054a84da33163f2c9109cc, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1800987518 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1727720335053360, guid: 2c0bf8260c37e68498d56a91d48496a2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1081990156}
+--- !u!114 &1800987519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1800987518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a710d10ee2e49d4e8e68feedefb9d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!1 &1835757722
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-class Weapon : NetworkBehaviour
+public class Weapon : NetworkBehaviour
 {
     [SerializeField] Bullet bullet;
 
+    public virtual void Fire(Vector3 startingPosition, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
+    {
+        CmdSpawnBullet(startingPosition, direction, networkIdentityToIgnore);
+    }
+
     [Command]
-    public void CmdSpawnBullet(Vector3 startingPosition, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
+    protected void CmdSpawnBullet(Vector3 startingPosition, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
     {
         GameObject bulletObject = Instantiate(bullet.gameObject) as GameObject;
         bulletObject.transform.SetParent(null);

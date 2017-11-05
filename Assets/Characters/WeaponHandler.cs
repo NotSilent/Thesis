@@ -8,7 +8,7 @@ class WeaponHandler : NetworkBehaviour
     
     public void FireCurrentWeapon(Vector3 target, NetworkIdentity networkIdentityToIgnore)
     {
-        currentWeapon.CmdSpawnBullet(projectileStartPosition.transform.position,
+        currentWeapon.Fire(projectileStartPosition.transform.position,
             target - projectileStartPosition.transform.position, networkIdentityToIgnore);
     }
 }
