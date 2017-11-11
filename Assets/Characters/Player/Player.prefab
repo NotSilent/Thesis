@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 114938013662568768}
   - component: {fileID: 114496767168092222}
   - component: {fileID: 114175375166825464}
+  - component: {fileID: 114999255274871214}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -824,7 +825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c5270b615d6397448a6f50789f24c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 10
 --- !u!114 &114250029401352904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -938,7 +939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ebbd756bcb583f40be755a8cd99d575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 114526427693009026, guid: 19a198f389531f142ba2c676d4cdd05f, type: 2}
+  bullet: {fileID: 0}
   model: {fileID: 1482509385588456}
   speed: 15
   localPlayerHealth: {fileID: 114140601750385362, guid: a41787cd7efd3464bb6a7c2ad3453a9b,
@@ -954,7 +955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c761a794e1c74f45ac18cc830be3015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 114526427693009026, guid: 19a198f389531f142ba2c676d4cdd05f, type: 2}
+  bullet: {fileID: 1667778934197320, guid: 19a198f389531f142ba2c676d4cdd05f, type: 2}
   numberOfBullets: 3
 --- !u!114 &114531226425722000
 MonoBehaviour:
@@ -1008,6 +1009,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWeapon: {fileID: 114496767168092222}
   projectileStartPosition: {fileID: 1912504842141818}
+--- !u!114 &114999255274871214
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1402205946361188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03de3a76a618e594fa9abe202528a996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levels: {fileID: 11400000, guid: 9142a03a22b3aa6458a0d1d112be3f1e, type: 2}
 --- !u!136 &136832196805853310
 CapsuleCollider:
   m_ObjectHideFlags: 1

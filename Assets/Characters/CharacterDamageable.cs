@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class CharacterDamageable : NetworkBehaviour, IDamageable
 {
     public delegate void NotifyOnDamageTaken(float currentHealth, float maxHealth);
-    
+
     public event NotifyOnDamageTaken EventOnDamageTaken;
 
     [SerializeField] float maxHealth = 100f;
@@ -22,10 +23,16 @@ public class CharacterDamageable : NetworkBehaviour, IDamageable
         EventOnDamageTaken(currentHealth, maxHealth);
     }
 
+    public void RecoverHealth()
+    {
+        if (isServer)
+            RpcTakeDamage(-maxHealth);
+        EventOnDamageTaken(currentHealth, maxHealth);
+    }
+
     [ClientRpc]
     private void RpcTakeDamage(float damage)
     {
-
         currentHealth -= damage;
 
         if (currentHealth <= 0f)
@@ -38,6 +45,6 @@ public class CharacterDamageable : NetworkBehaviour, IDamageable
 
     protected virtual void OnDied()
     {
-        Destroy(gameObject);
+        GetComponent<Player>().Disable();
     }
 }

@@ -44,7 +44,6 @@ public class Player : NetworkBehaviour
             GetComponentInChildren<HealthIndicator>().gameObject.SetActive(false);
             GameObject playerHealthUI = Instantiate(localPlayerHealth.gameObject) as GameObject;
             playerHealthUI.GetComponent<LocalPlayerHealth>().Init(GetComponent<CharacterDamageable>());
-            Debug.Log("ASDASDASD");
         }
     }
 

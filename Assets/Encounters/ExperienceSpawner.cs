@@ -12,7 +12,7 @@ public class ExperienceSpawner : NetworkBehaviour
     public void Init(float experience, Vector3 position)
     {
         transform.position = position;
-        StartCoroutine(SpawnExperience(experience / time * ticks, time / ticks));
+        StartCoroutine(SpawnExperience(experience / ticks, time / ticks));
     }
 
     IEnumerator SpawnExperience(float experiencePerSpawn, float deltaTick)
@@ -20,13 +20,13 @@ public class ExperienceSpawner : NetworkBehaviour
         Player[] players = FindObjectsOfType<Player>();
 
         var orderedPlayers = players.OrderBy(p => Vector3.Distance(transform.position, p.transform.position));
-        Player player = orderedPlayers.First<Player>();
+        Player player = orderedPlayers.First();
 
         for (int i = 0; i < ticks; i++)
         {
             GameObject newExperience = Instantiate(experience.gameObject) as GameObject;
             newExperience.transform.SetParent(null);
-            newExperience.GetComponent<Experience>().Init(player.gameObject, transform.position);
+            newExperience.GetComponent<Experience>().Init(player.gameObject, transform.position, experiencePerSpawn);
             NetworkServer.Spawn(newExperience);
             yield return new WaitForSeconds(deltaTick);
         }

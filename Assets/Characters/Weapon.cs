@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class Weapon : NetworkBehaviour
 {
-    [SerializeField] Bullet bullet;
+    [SerializeField] GameObject bullet;
+    [SerializeField] [SyncVar] float damage = 1f;
 
     public virtual void Fire(Vector3 startingPosition, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
     {
@@ -19,16 +21,22 @@ public class Weapon : NetworkBehaviour
 
         NetworkServer.Spawn(bulletObject);
 
-        RpcSetBulletDirection(bulletObject, direction, networkIdentityToIgnore);
+        RpcInitBullet(bulletObject, direction, networkIdentityToIgnore);
     }
 
     [ClientRpc]
-    void RpcSetBulletDirection(GameObject bulletObject, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
+    void RpcInitBullet(GameObject bulletObject, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
     {
         Bullet newBullet = bulletObject.GetComponent<Bullet>();
         newBullet.Direction = direction.normalized;
+        newBullet.Damage = damage;
         Collider col = networkIdentityToIgnore.GetComponent<Collider>();
         if (GetComponent<Collider>())
             Physics.IgnoreCollision(col, bulletObject.GetComponent<Collider>());
+    }
+
+    public void IncreaseBulletDamage()
+    {
+        damage++;
     }
 }

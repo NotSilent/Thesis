@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 public class CustomNetworkManagerHUD : MonoBehaviour
 {
     public NetworkManager manager;
-    [SerializeField] public bool showGUI = true;
     [SerializeField] public int offsetX;
     [SerializeField] public int offsetY;
 
@@ -17,9 +16,6 @@ public class CustomNetworkManagerHUD : MonoBehaviour
 
     void OnGUI()
     {
-        if (!showGUI)
-            return;
-
         int xpos = 10 + offsetX;
         int ypos = 40 + offsetY;
         const int spacing = 24;
@@ -56,20 +52,6 @@ public class CustomNetworkManagerHUD : MonoBehaviour
                     manager.StopClient();
                 }
             }
-        }
-
-        if (manager.IsClientConnected() && !ClientScene.ready)
-        {
-            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Client Ready"))
-            {
-                ClientScene.Ready(manager.client.connection);
-
-                if (ClientScene.localPlayers.Count == 0)
-                {
-                    ClientScene.AddPlayer(0);
-                }
-            }
-            ypos += spacing;
         }
 
         if (NetworkServer.active || manager.IsClientConnected())

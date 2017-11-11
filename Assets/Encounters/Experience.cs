@@ -7,7 +7,9 @@ class Experience : NetworkBehaviour
 
     GameObject target;
     Rigidbody rb;
-    
+
+    float experiencePerSpawn;
+
     void FixedUpdate()
     {
         if (target)
@@ -23,23 +25,27 @@ class Experience : NetworkBehaviour
         rb.velocity = leveledDirection * speed;
     }
 
-    public void Init(GameObject target, Vector3 startingPosition)
+    public void Init(GameObject target, Vector3 startingPosition, float experiencePerSpawn)
     {
         this.target = target;
+        this.experiencePerSpawn = experiencePerSpawn;
+
         transform.position = startingPosition + Vector3.up;
 
         rb = GetComponent<Rigidbody>();
         transform.forward = Vector3.up;
     }
-    
+
     void OnCollisionEnter(Collision collision)
     {
-        RpcOnCollision();
+        if (isServer)
+            RpcOnCollision(collision.gameObject.GetComponent<NetworkIdentity>());
     }
 
     [ClientRpc]
-    void RpcOnCollision()
+    void RpcOnCollision(NetworkIdentity networkIdentity)
     {
+        networkIdentity.GetComponent<Statistics>().AddExperience(experiencePerSpawn);
         Destroy(gameObject);
     }
 }

@@ -264,10 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c791c546b93a1f428bfa29d664ebc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 10
   experienceSpawner: {fileID: 114760301962165770, guid: e200cf76ada388f459ace05e8c8c7798,
     type: 2}
-  experience: 100
+  experience: 5
 --- !u!114 &114882969116350146
 MonoBehaviour:
   m_ObjectHideFlags: 1

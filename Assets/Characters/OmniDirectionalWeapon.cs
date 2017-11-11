@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -26,5 +27,10 @@ public class OmniDirectionalWeapon : Weapon
         float signedAngle = angle * sign;
 
         return signedAngle;
+    }
+
+    public void IncreaseBullets()
+    {
+        numberOfBullets++;
     }
 }

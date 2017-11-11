@@ -10,7 +10,7 @@ public class EnemyDamageable : CharacterDamageable
     {
         if (isServer)
             SpawnExperience();
-        base.OnDied();
+        Destroy(gameObject);
     }
 
     [Server]
