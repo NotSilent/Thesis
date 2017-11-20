@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 136829282375505530}
   - component: {fileID: 23556990533127556}
   - component: {fileID: 114366757003179996}
-  - component: {fileID: 114780819471734726}
+  - component: {fileID: 114493640079509100}
   m_Layer: 0
   m_Name: PlayArea
   m_TagString: Untagged
@@ -39,7 +39,7 @@ Transform:
   m_GameObject: {fileID: 1115433746060144}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 50, y: 0.001, z: 50}
+  m_LocalScale: {x: 500, y: 0.001, z: 500}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
     i15: 7
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &114780819471734726
+--- !u!114 &114493640079509100
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -126,7 +126,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04e5993205835f24bb11f97a3788eebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 60
+  startingPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  time: 0
 --- !u!136 &136829282375505530
 CapsuleCollider:
   m_ObjectHideFlags: 1

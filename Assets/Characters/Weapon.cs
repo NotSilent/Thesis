@@ -7,9 +7,9 @@ public class Weapon : NetworkBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] [SyncVar] float damage = 1f;
 
-    public virtual void Fire(Vector3 startingPosition, Vector3 direction, NetworkIdentity networkIdentityToIgnore)
+    public virtual void Fire(Vector3 startingPosition, Vector3 target, NetworkIdentity networkIdentityToIgnore)
     {
-        CmdSpawnBullet(startingPosition, direction, networkIdentityToIgnore);
+        CmdSpawnBullet(startingPosition, target - startingPosition, networkIdentityToIgnore);
     }
 
     [Command]

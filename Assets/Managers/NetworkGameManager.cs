@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,6 +12,7 @@ public class NetworkGameManager : NetworkBehaviour
 
     void Awake()
     {
+        currentPlayers = 0;
         area = FindObjectOfType<Area>();
     }
 
@@ -21,7 +23,14 @@ public class NetworkGameManager : NetworkBehaviour
 
         if (currentPlayers >= 2)
         {
-            area.Init();
+            StartCoroutine(Init(1f));
         }
+    }
+
+    IEnumerator Init(float timeToStart)
+    {
+        yield return new WaitForSeconds(timeToStart);
+        area.Init();
+
     }
 }

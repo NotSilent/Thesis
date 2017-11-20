@@ -16,8 +16,8 @@ TagManager:
   - Player
   - Experience
   - Bullet
-  - 
-  - 
+  - EnemyBullet
+  - Enemy
   - 
   - 
   - 

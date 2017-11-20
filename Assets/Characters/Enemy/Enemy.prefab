@@ -25,7 +25,8 @@ GameObject:
   - component: {fileID: 136194006484742058}
   - component: {fileID: 114957342254817954}
   - component: {fileID: 114876143339021100}
-  m_Layer: 0
+  - component: {fileID: 114800537435546484}
+  m_Layer: 12
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +43,7 @@ GameObject:
   - component: {fileID: 224023464939827576}
   - component: {fileID: 222844835568004848}
   - component: {fileID: 114939278346647086}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +60,7 @@ GameObject:
   - component: {fileID: 4324612854007208}
   - component: {fileID: 33338279727310212}
   - component: {fileID: 23156263214754798}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +79,7 @@ GameObject:
   - component: {fileID: 114318778379854004}
   - component: {fileID: 114882969116350146}
   - component: {fileID: 114858658386531516}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,6 +242,20 @@ MonoBehaviour:
     i15: 203
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114800537435546484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1097574712531398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c761a794e1c74f45ac18cc830be3015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 1667778934197320, guid: 89547a9142d3e304a907b710b899d50b, type: 2}
+  damage: 1
+  numberOfBullets: 0
 --- !u!114 &114858658386531516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -322,7 +337,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc182ecbb5055246ad07c16dabecb71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 2
+  patrolSize: 50
+  timeBetweenShoots: 1
+  playerAproachCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: -30
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.5
+      value: 0
+      inSlope: 195.88237
+      outSlope: 195.88237
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 30
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!136 &136194006484742058
 CapsuleCollider:
   m_ObjectHideFlags: 1

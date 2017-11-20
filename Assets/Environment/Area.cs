@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class Area : NetworkBehaviour
@@ -16,7 +17,7 @@ public class Area : NetworkBehaviour
 
     void Update()
     {
-        if (isInitialized && transform.localScale.x > 10)
+        if (isInitialized && transform.localScale.x > 50)
             transform.localScale -= startingScale / time * Time.deltaTime;
     }
 
@@ -44,7 +45,20 @@ public class Area : NetworkBehaviour
     public void Init()
     {
         if (isServer)
+        {
             RpcInit();
+            RpcEnablePlayers();
+        }
+    }
+
+    [ClientRpc]
+    private void RpcEnablePlayers()
+    {
+        Player[] players = FindObjectsOfType<Player>();
+        foreach (Player player in players)
+        {
+            player.Enable();
+        }
     }
 
     [ClientRpc]

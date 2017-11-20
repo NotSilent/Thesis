@@ -1,24 +1,51 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
 
 public class Enemy : NetworkBehaviour
 {
-    [SerializeField] float speed = 5;
+    public enum AiState
+    {
+        Patrol,
+        Attack,
+    }
+
+    public class AiStateParameters
+    {
+        public NetworkIdentity currentTarget;
+        public float angle;
+    }
+
+    [SerializeField] float speed = 5f;
+    [SerializeField] float patrolSize = 50f;
+    [SerializeField] float timeBetweenShoots = 2f;
+    [SerializeField] AnimationCurve playerAproachCurve;
+
+    float currentTimeBetweenShoots;
+    float timeBetweenStateChange = 1f;
+    float currentTimeBetweenStateChange;
 
     Rigidbody rb;
 
-    int direction = 0;
+    AiState currentState;
+    Player currentTarget;
+    Weapon weapon;
 
-    float timeToChangeDirection = 1f;
-    float currentTimeToChangeDirection;
+    float angle;
 
     void Start()
     {
+        angle = 0f;
+        weapon = GetComponent<Weapon>();
+
+        currentState = AiState.Patrol;
+        currentTarget = null;
+
         rb = GetComponent<Rigidbody>();
-        currentTimeToChangeDirection = timeToChangeDirection;
+        currentTimeBetweenShoots = timeBetweenShoots;
+        currentTimeBetweenStateChange = timeBetweenStateChange;
+
+        if (isServer)
+            TryToChangeState();
     }
 
     void Update()
@@ -26,49 +53,85 @@ public class Enemy : NetworkBehaviour
         if (!isServer)
             return;
 
-        currentTimeToChangeDirection += Time.deltaTime;
-        if (currentTimeToChangeDirection > timeToChangeDirection)
+        currentTimeBetweenStateChange += Time.deltaTime;
+        if (currentTimeBetweenStateChange > timeBetweenStateChange)
         {
-            int direction = UnityEngine.Random.Range(0, 3);
-            RpcSetDirection(direction);
-            currentTimeToChangeDirection = 0;
+            TryToChangeState();
+            currentTimeBetweenStateChange = ((Random.value * 2) - 1) * timeBetweenStateChange * 0.1f;
         }
+
+        switch (currentState)
+        {
+            case AiState.Patrol:
+                break;
+
+            case AiState.Attack:
+                currentTimeBetweenShoots += Time.deltaTime;
+                if (currentTimeBetweenShoots > timeBetweenShoots)
+                {
+                    Shoot(currentTarget);
+                    currentTimeBetweenShoots = 0;
+                }
+                break;
+        }
+    }
+
+    void Shoot(Player currentTarget)
+    {
+        weapon.Fire(transform.position, currentTarget.transform.position, GetComponent<NetworkIdentity>());
     }
 
     void FixedUpdate()
     {
-        RandomWalk(direction);
+        switch (currentState)
+        {
+            case AiState.Patrol:
+                break;
+
+            case AiState.Attack:
+                MoveTowards(currentTarget);
+                break;
+        }
+    }
+
+    [Server]
+    private void TryToChangeState()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, patrolSize, 1 << LayerMask.NameToLayer("Player"));
+        if (colliders.Length > 0)
+        {
+            foreach (Collider collider in colliders)
+            {
+                Player player = collider.GetComponent<Player>();
+
+                if (player)
+                {
+                    RpcChangeState(AiState.Attack, new AiStateParameters
+                    {
+                        currentTarget = player.gameObject.GetComponent<NetworkIdentity>(),
+                        angle = playerAproachCurve.Evaluate(Random.value)
+                    });
+                    return;
+                }
+            }
+        }
     }
 
     [ClientRpc]
-    void RpcSetDirection(int direction)
+    void RpcChangeState(AiState state, AiStateParameters aiStateParameters)
     {
-        this.direction = direction;
+        currentState = state;
+        switch (state)
+        {
+            case AiState.Attack:
+                currentTarget = aiStateParameters.currentTarget.GetComponent<Player>();
+                angle = aiStateParameters.angle;
+                break;
+        }
     }
 
-    void RandomWalk(int direction)
+    void MoveTowards(Player currentTarget)
     {
-        switch (direction)
-        {
-            case 0:
-                rb.velocity = Vector3.forward * speed;
-                break;
-
-            case 1:
-                rb.velocity = Vector3.back * speed;
-                break;
-
-            case 2:
-                rb.velocity = Vector3.left * speed;
-                break;
-
-            case 3:
-                rb.velocity = Vector3.right * speed;
-                break;
-
-            default:
-                return;
-        }
-        rb.AddForce(Physics.gravity);
+        rb.velocity = Quaternion.AngleAxis(angle, Vector3.up) * (currentTarget.gameObject.transform.position - transform.position).normalized * speed;
     }
 }

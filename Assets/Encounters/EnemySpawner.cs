@@ -3,18 +3,23 @@ using UnityEngine.Networking;
 
 public class EnemySpawner : NetworkBehaviour
 {
-    [SerializeField] int maxNumberOfEnemies = 5;
     [SerializeField] float timeBetweenSpawns = 5f;
 
     [SerializeField] Enemy enemyToSpawn;
 
-    int currentNumberOfEnemies;
-    float currentTimeBetweenSpawns;
+    Area area;
     
+    float currentTimeBetweenSpawns;
+
     void Start()
     {
-        currentNumberOfEnemies = 0;
+        area = FindObjectOfType<Area>();
         currentTimeBetweenSpawns = timeBetweenSpawns;
+
+        for (int i = 0; i < 250; i++)
+        {
+            SpawnEnemyOnNetwork();
+        }
     }
 
     void Update()
@@ -23,9 +28,8 @@ public class EnemySpawner : NetworkBehaviour
             return;
 
         currentTimeBetweenSpawns += Time.deltaTime;
-        if (currentTimeBetweenSpawns > timeBetweenSpawns && currentNumberOfEnemies < maxNumberOfEnemies)
+        if (currentTimeBetweenSpawns > timeBetweenSpawns)
         {
-            currentNumberOfEnemies++;
             currentTimeBetweenSpawns = 0f;
             SpawnEnemyOnNetwork();
         }
@@ -33,7 +37,18 @@ public class EnemySpawner : NetworkBehaviour
 
     void SpawnEnemyOnNetwork()
     {
+        Vector3 positionToSpawn = FindFreePosition();
         GameObject newEnemy = Instantiate(enemyToSpawn.gameObject) as GameObject;
+        newEnemy.transform.position = positionToSpawn;
         NetworkServer.Spawn(newEnemy);
+    }
+
+    Vector3 FindFreePosition()
+    {
+        float currentSizeOfArea = area.transform.localScale.x;
+        int x = Random.Range((int)(-currentSizeOfArea * 0.4f), (int)(currentSizeOfArea * 0.4f));
+        int z = Random.Range((int)(-currentSizeOfArea * 0.4f), (int)(currentSizeOfArea * 0.4f));
+
+        return new Vector3(x, 0f, z);
     }
 }

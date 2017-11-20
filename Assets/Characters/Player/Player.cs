@@ -17,21 +17,19 @@ public class Player : NetworkBehaviour
 
     Rigidbody rb;
 
-    private void Awake()
-    {
-        //if (FindObjectOfType<NetworkGameManager>())
-        //{
-        //    FindObjectOfType<NetworkGameManager>().RpcRegisterPlayer();
-        //}
-
-    }
-
     private void Start()
     {
         networkIdentity = GetComponent<NetworkIdentity>();
         weaponHandler = GetComponent<WeaponHandler>();
 
+        NetworkGameManager networkGameManager = FindObjectOfType<NetworkGameManager>();
+        if (networkGameManager && isServer)
+        {
+            networkGameManager.RpcRegisterPlayer();
+        }
+
         rb = GetComponent<Rigidbody>();
+        Disable();
 
         if (!isLocalPlayer)
         {
@@ -44,11 +42,40 @@ public class Player : NetworkBehaviour
             GetComponentInChildren<HealthIndicator>().gameObject.SetActive(false);
             GameObject playerHealthUI = Instantiate(localPlayerHealth.gameObject) as GameObject;
             playerHealthUI.GetComponent<LocalPlayerHealth>().Init(GetComponent<CharacterDamageable>());
+            InitPlayerStartingPosition();
+
+            GameMenu gameMenu = FindObjectOfType<GameMenu>();
+            gameMenu.disconnect.onClick.AddListener(Disconnect);
+
+            gameMenu.disconnect.gameObject.SetActive(false);
         }
+    }
+
+    void InitPlayerStartingPosition()
+    {
+        float x = UnityEngine.Random.Range(50f, 100f);
+        float z = UnityEngine.Random.Range(50f, 100f);
+        int minus = UnityEngine.Random.Range(0, 1);
+        if (minus == 1)
+        {
+            x *= -1;
+            z *= -1;
+        }
+        transform.position = new Vector3(x, 0, z);
+    }
+
+    public void Enable()
+    {
+        foreach (MeshRenderer meshRenderer in model.GetComponentsInChildren<MeshRenderer>())
+        {
+            meshRenderer.enabled = true;
+        }
+        this.enabled = true;
     }
 
     public void Disable()
     {
+        return;
         rb.velocity = Vector3.zero;
         foreach (MeshRenderer meshRenderer in model.GetComponentsInChildren<MeshRenderer>())
         {
@@ -102,4 +129,39 @@ public class Player : NetworkBehaviour
 
         rb.velocity = direction * speed + Physics.gravity;
     }
+
+    void Disconnect()
+    {
+        if (isServer)
+        {
+            RpcDisconnect();
+        }
+        else
+        {
+            CmdDisconnect();
+        }
+    }
+
+    [Command]
+    void CmdDisconnect()
+    {
+        RpcDisconnect();
+    }
+
+    [ClientRpc]
+    void RpcDisconnect()
+    {
+        Network.Disconnect();
+        NetworkManager networkManager = FindObjectOfType<NetworkManager>();
+        if (isServer)
+        {
+            networkManager.StopHost();
+        }
+        else
+        {
+            networkManager.StopClient();
+        }
+
+    }
 }
+

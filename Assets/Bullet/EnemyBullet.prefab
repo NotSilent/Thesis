@@ -26,8 +26,8 @@ GameObject:
   - component: {fileID: 135622271504833138}
   - component: {fileID: 54442101660646844}
   - component: {fileID: 114457352248927498}
-  m_Layer: 10
-  m_Name: Bullet
+  m_Layer: 11
+  m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 58bd7159ff11afd46aeca55c75d1e762, type: 2}
+  - {fileID: 2100000, guid: 887f1dcec20971d43b057ddd1664e293, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,22 +148,22 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 25
-    i1: 161
-    i2: 152
-    i3: 243
-    i4: 137
-    i5: 83
-    i6: 31
-    i7: 20
-    i8: 43
-    i9: 162
-    i10: 198
-    i11: 118
-    i12: 212
-    i13: 205
-    i14: 208
-    i15: 95
+    i0: 137
+    i1: 84
+    i2: 122
+    i3: 145
+    i4: 66
+    i5: 211
+    i6: 227
+    i7: 4
+    i8: 169
+    i9: 7
+    i10: 183
+    i11: 16
+    i12: 184
+    i13: 153
+    i14: 213
+    i15: 11
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
 --- !u!135 &135622271504833138
