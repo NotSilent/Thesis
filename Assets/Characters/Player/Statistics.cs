@@ -10,7 +10,7 @@ public class Statistics : NetworkBehaviour
 
     UiManager uiManager;
 
-    void Awake()
+    void Start()
     {
         uiManager = FindObjectOfType<UiManager>();
     }
@@ -65,6 +65,7 @@ public class Statistics : NetworkBehaviour
 
     void OpenUpgradeWindow()
     {
-        uiManager.upgradeWindow.Open();
+        if (uiManager)
+            uiManager.upgradeWindow.Open();
     }
 }

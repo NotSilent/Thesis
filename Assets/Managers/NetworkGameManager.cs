@@ -7,13 +7,17 @@ using UnityEngine.Networking;
 public class NetworkGameManager : NetworkBehaviour
 {
     int currentPlayers;
+    int currentLevel;
 
     Area area;
+    EnemySpawner enemySpawner;
 
-    void Awake()
+    void Start()
     {
+        currentLevel = 0;
         currentPlayers = 0;
         area = FindObjectOfType<Area>();
+        enemySpawner = FindObjectOfType<EnemySpawner>();
     }
 
     [ClientRpc]
@@ -21,7 +25,7 @@ public class NetworkGameManager : NetworkBehaviour
     {
         currentPlayers++;
 
-        if (currentPlayers >= 2)
+        if (currentPlayers >= area.playersToStart)
         {
             StartCoroutine(Init(1f));
         }
@@ -29,8 +33,36 @@ public class NetworkGameManager : NetworkBehaviour
 
     IEnumerator Init(float timeToStart)
     {
-        yield return new WaitForSeconds(timeToStart);
         area.Init();
 
+        yield return new WaitForSeconds(timeToStart);
+        if (enemySpawner)
+        {
+            enemySpawner.isInitialized = true;
+            enemySpawner.SpawnWave(currentLevel);
+        }
+    }
+
+    public void InitializeNextLevel()
+    {
+        currentLevel++;
+        StartCoroutine(Init(1f));
+        InitPlayers();
+
+        EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
+        if (enemySpawner)
+        {
+            enemySpawner.DeleteAllEnemies();
+            enemySpawner.SpawnWave(currentLevel);
+        }
+    }
+
+    private static void InitPlayers()
+    {
+        Player[] players = FindObjectsOfType<Player>();
+        foreach (Player player in players)
+        {
+            player.ReInit();
+        }
     }
 }

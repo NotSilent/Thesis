@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1868517499624968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,7 +84,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4e9095bb09c664e9ab3859b54e2b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxNumberOfEnemies: 5
+  isInitialized: 0
   timeBetweenSpawns: 5
   enemyToSpawn: {fileID: 114957342254817954, guid: 6676196edb444d546b2d20af74d1cecb,
     type: 2}
+  bossEnemy: {fileID: 114968362703041428, guid: de75fd00c56916940b3dafb2124cceb0,
+    type: 2}
+  wavesConfig: {fileID: 0}

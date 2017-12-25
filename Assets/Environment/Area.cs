@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 
 public class Area : NetworkBehaviour
 {
+    public int playersToStart = 2;
+
     [SerializeField] float time;
 
     Vector3 startingScale;
@@ -31,6 +33,9 @@ public class Area : NetworkBehaviour
     [ClientRpc]
     void RpcOnTriggerExit(NetworkIdentity other)
     {
+        if (!other)
+            return;
+
         Player player = other.gameObject.GetComponent<Player>();
         if (player)
         {
@@ -44,11 +49,9 @@ public class Area : NetworkBehaviour
 
     public void Init()
     {
-        if (isServer)
-        {
-            RpcInit();
-            RpcEnablePlayers();
-        }
+        RpcInit();
+        RpcEnablePlayers();
+
     }
 
     [ClientRpc]
@@ -65,5 +68,6 @@ public class Area : NetworkBehaviour
     private void RpcInit()
     {
         isInitialized = true;
+        transform.localScale = startingScale;
     }
 }

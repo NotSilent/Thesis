@@ -22,7 +22,7 @@ class Experience : NetworkBehaviour
     {
         Vector3 toDirection = target.transform.position - transform.position;
         Vector3 leveledDirection = new Vector3(toDirection.x, 0, toDirection.z);
-        rb.velocity = leveledDirection * speed;
+        rb.velocity = leveledDirection.normalized * speed;
     }
 
     public void Init(GameObject target, Vector3 startingPosition, float experiencePerSpawn)
@@ -36,10 +36,10 @@ class Experience : NetworkBehaviour
         transform.forward = Vector3.up;
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
         if (isServer)
-            RpcOnCollision(collision.gameObject.GetComponent<NetworkIdentity>());
+            RpcOnCollision(other.gameObject.GetComponent<NetworkIdentity>());
     }
 
     [ClientRpc]

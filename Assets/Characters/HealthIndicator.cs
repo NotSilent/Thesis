@@ -7,19 +7,23 @@ public class HealthIndicator : MonoBehaviour
 
     CharacterDamageable health;
 
-    private void Awake()
+    private void Start()
     {
         health = GetComponentInParent<CharacterDamageable>();
+        if (health)
+            health.EventOnDamageTaken += Health_EventOnDamageTaken;
     }
 
     private void OnEnable()
     {
-        health.EventOnDamageTaken += Health_EventOnDamageTaken;
+        if (health)
+            health.EventOnDamageTaken += Health_EventOnDamageTaken;
     }
 
     private void OnDisable()
     {
-        health.EventOnDamageTaken -= Health_EventOnDamageTaken;
+        if (health)
+            health.EventOnDamageTaken -= Health_EventOnDamageTaken;
     }
 
     private void Health_EventOnDamageTaken(float currentHealth, float maxHealth)

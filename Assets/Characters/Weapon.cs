@@ -39,4 +39,8 @@ public class Weapon : NetworkBehaviour
     {
         damage++;
     }
+    public void SetBulletDamage(int damage)
+    {
+        this.damage = damage;
+    }
 }

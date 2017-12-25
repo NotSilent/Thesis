@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -30,23 +31,39 @@ public class Player : NetworkBehaviour
 
         rb = GetComponent<Rigidbody>();
         Disable();
+        StopAllCoroutines();
 
         if (!isLocalPlayer)
         {
             MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer meshRenderer in meshRenderers)
-                meshRenderer.material.color = Color.red;
+                meshRenderer.material.color = Color.black;
         }
         else
         {
             GetComponentInChildren<HealthIndicator>().gameObject.SetActive(false);
             GameObject playerHealthUI = Instantiate(localPlayerHealth.gameObject) as GameObject;
             playerHealthUI.GetComponent<LocalPlayerHealth>().Init(GetComponent<CharacterDamageable>());
+
             InitPlayerStartingPosition();
+            InitDisconnectButton();
+        }
+    }
 
-            GameMenu gameMenu = FindObjectOfType<GameMenu>();
+    public void ReInit()
+    {
+        InitPlayerStartingPosition();
+        CharacterDamageable health = FindObjectOfType<CharacterDamageable>();
+        if (health)
+            health.TakeDamage(-float.PositiveInfinity);
+    }
+
+    void InitDisconnectButton()
+    {
+        GameMenu gameMenu = FindObjectOfType<GameMenu>();
+        if (gameMenu)
+        {
             gameMenu.disconnect.onClick.AddListener(Disconnect);
-
             gameMenu.disconnect.gameObject.SetActive(false);
         }
     }
@@ -75,13 +92,20 @@ public class Player : NetworkBehaviour
 
     public void Disable()
     {
-        return;
         rb.velocity = Vector3.zero;
         foreach (MeshRenderer meshRenderer in model.GetComponentsInChildren<MeshRenderer>())
         {
             meshRenderer.enabled = false;
         }
         this.enabled = false;
+
+        StartCoroutine(DisconnectIn(2f));
+    }
+
+    IEnumerator DisconnectIn(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Disconnect();
     }
 
     void Update()
@@ -109,7 +133,7 @@ public class Player : NetworkBehaviour
 
     void ProcessInput(Vector3 target)
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             weaponHandler.FireCurrentWeapon(target, networkIdentity);
         }
@@ -153,11 +177,11 @@ public class Player : NetworkBehaviour
     {
         Network.Disconnect();
         NetworkManager networkManager = FindObjectOfType<NetworkManager>();
-        if (isServer)
+        if (isServer && networkManager)
         {
             networkManager.StopHost();
         }
-        else
+        else if (networkManager)
         {
             networkManager.StopClient();
         }

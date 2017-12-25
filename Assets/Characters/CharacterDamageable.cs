@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,19 +15,29 @@ public class CharacterDamageable : NetworkBehaviour, IDamageable
     void Start()
     {
         currentHealth = maxHealth;
+        StartCoroutine(HealthRecovery(1f, 10f));
     }
 
-    public void TakeDamage(float damage)
+    IEnumerator HealthRecovery(float amountRecovered, float timeBetweenRecoveries)
     {
-        if (isServer)
-            RpcTakeDamage(damage);
-        EventOnDamageTaken(currentHealth, maxHealth);
+        while (true)
+        {
+            yield return new WaitForSeconds(timeBetweenRecoveries);
+            TakeDamage(-amountRecovered);
+        }
     }
 
     public void RecoverHealth()
     {
         if (isServer)
             RpcTakeDamage(-maxHealth);
+        EventOnDamageTaken(currentHealth, maxHealth);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (isServer)
+            RpcTakeDamage(damage);
         EventOnDamageTaken(currentHealth, maxHealth);
     }
 

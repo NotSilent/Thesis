@@ -15,24 +15,25 @@ public class Enemy : NetworkBehaviour
         public float angle;
     }
 
-    [SerializeField] float speed = 5f;
+    public float speed = 5f;
+    public float timeBetweenShoots = 2f;
+
     [SerializeField] float patrolSize = 50f;
-    [SerializeField] float timeBetweenShoots = 2f;
     [SerializeField] AnimationCurve playerAproachCurve;
 
     float currentTimeBetweenShoots;
     float timeBetweenStateChange = 1f;
     float currentTimeBetweenStateChange;
 
-    Rigidbody rb;
+    protected Rigidbody rb;
+    protected float angle;
 
     AiState currentState;
     Player currentTarget;
     Weapon weapon;
 
-    float angle;
 
-    void Start()
+    protected virtual void Start()
     {
         angle = 0f;
         weapon = GetComponent<Weapon>();
@@ -43,6 +44,10 @@ public class Enemy : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         currentTimeBetweenShoots = timeBetweenShoots;
         currentTimeBetweenStateChange = timeBetweenStateChange;
+
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer meshRenderer in meshRenderers)
+            meshRenderer.material.color = Color.red;
 
         if (isServer)
             TryToChangeState();
@@ -57,7 +62,8 @@ public class Enemy : NetworkBehaviour
         if (currentTimeBetweenStateChange > timeBetweenStateChange)
         {
             TryToChangeState();
-            currentTimeBetweenStateChange = ((Random.value * 2) - 1) * timeBetweenStateChange * 0.1f;
+            currentTimeBetweenStateChange = ((Random.value * 2) - 1) 
+                * timeBetweenStateChange * 0.1f;
         }
 
         switch (currentState)
@@ -86,6 +92,7 @@ public class Enemy : NetworkBehaviour
         switch (currentState)
         {
             case AiState.Patrol:
+                MoveTowards(currentTarget, 0.5f);
                 break;
 
             case AiState.Attack:
@@ -97,7 +104,8 @@ public class Enemy : NetworkBehaviour
     [Server]
     private void TryToChangeState()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, patrolSize, 1 << LayerMask.NameToLayer("Player"));
+        Collider[] colliders = Physics.OverlapSphere(transform.position,
+            patrolSize, 1 << LayerMask.NameToLayer("Player"));
         if (colliders.Length > 0)
         {
             foreach (Collider collider in colliders)
@@ -130,8 +138,9 @@ public class Enemy : NetworkBehaviour
         }
     }
 
-    void MoveTowards(Player currentTarget)
+    protected virtual void MoveTowards(Player currentTarget, float multiplier = 1f)
     {
-        rb.velocity = Quaternion.AngleAxis(angle, Vector3.up) * (currentTarget.gameObject.transform.position - transform.position).normalized * speed;
+        if (currentTarget)
+            rb.velocity = Quaternion.AngleAxis(angle, Vector3.up) * (currentTarget.gameObject.transform.position - transform.position).normalized * speed * multiplier;
     }
 }

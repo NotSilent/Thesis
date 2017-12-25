@@ -7,7 +7,7 @@ public class CameraFollow : NetworkBehaviour
         
 	Camera cam;
 
-	private void Awake()
+	private void Start()
 	{
 		cam = Camera.main;
 	}

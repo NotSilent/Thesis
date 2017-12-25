@@ -13,7 +13,7 @@ public class OmniDirectionalWeapon : Weapon
         float angleBetweenBullets = 360f / numberOfBullets;
         for (int i = 0; i < numberOfBullets; i++)
         {
-            CmdSpawnBullet(transform.position + Vector3.up, Quaternion.AngleAxis(angleBetweenBullets * i, Vector3.up) * (target - startingPosition), networkIdentityToIgnore);
+            CmdSpawnBullet(transform.position + Vector3.up, (Quaternion.AngleAxis(angleBetweenBullets * i, Vector3.up) * (target - startingPosition)).normalized, networkIdentityToIgnore);
         }
     }
 
